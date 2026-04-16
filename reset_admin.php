@@ -4,8 +4,10 @@ require_once __DIR__ . '/config/database.php';
 echo "<h1>Resetting Admin Password...</h1>";
 
 $new_username = 'admin';
-$new_password = 'admin123';
+$new_password = 'admin'; // Dipermudah menjadi 'admin'
 $hashed_password = password_hash($new_password, PASSWORD_DEFAULT);
+
+echo "<p>Debug Hash: <code>" . $hashed_password . "</code> (Length: " . strlen($hashed_password) . ")</p>";
 
 try {
     // 1. Cek apakah user admin ada

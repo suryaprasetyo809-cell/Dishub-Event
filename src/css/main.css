@@ -1,0 +1,144 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* ============================================
+   BASE STYLES
+   ============================================ */
+@layer base {
+  html {
+    scroll-behavior: smooth;
+  }
+  body {
+    @apply font-sans text-slate-800 bg-slate-50;
+  }
+  * {
+    @apply antialiased;
+  }
+}
+
+/* ============================================
+   GLOBAL COMPONENT CLASSES
+   ============================================ */
+@layer components {
+
+  /* --- BUTTONS --- */
+  .btn-primary {
+    @apply bg-dishub-blue text-white px-6 py-3 rounded-xl font-bold text-sm
+           hover:bg-dishub-navy hover:shadow-lg transition-all duration-200 active:scale-95
+           inline-flex items-center gap-2;
+  }
+  .btn-accent {
+    @apply bg-dishub-accent text-dishub-navy px-8 py-4 rounded-xl font-bold text-sm
+           hover:bg-yellow-400 hover:shadow-lg transition-all duration-200 active:scale-95
+           inline-flex items-center gap-2;
+  }
+  .btn-danger {
+    @apply text-red-500 hover:text-white text-xs font-semibold uppercase tracking-wider
+           px-4 py-2 rounded-lg hover:bg-red-500 transition-all duration-200;
+  }
+
+  /* --- ADMIN SIDEBAR LINKS --- */
+  .side-link {
+    @apply flex items-center gap-3 px-4 py-3 rounded-xl font-semibold text-sm
+           text-slate-400 transition-all duration-200 hover:bg-white/10 hover:text-white;
+  }
+  .side-link.active {
+    @apply bg-dishub-blue text-white shadow-lg;
+  }
+  .side-link .side-icon {
+    @apply text-lg w-6 h-6 flex items-center justify-center opacity-70;
+  }
+  .side-link.active .side-icon {
+    @apply opacity-100;
+  }
+
+  /* --- ADMIN CARDS --- */
+  .glass-card {
+    @apply bg-white rounded-2xl border border-slate-100 shadow-sm relative overflow-hidden;
+  }
+  .stat-card {
+    @apply glass-card p-6 cursor-pointer hover:shadow-md transition-all duration-300 hover:-translate-y-1;
+  }
+
+  /* --- ADMIN BUTTONS --- */
+  .btn-action {
+    @apply bg-dishub-blue text-white px-5 py-2.5 rounded-lg font-semibold text-sm
+           hover:bg-dishub-navy transition-all duration-200 active:scale-95
+           inline-flex items-center gap-2;
+  }
+
+  /* --- TABLE STYLES --- */
+  .tbl-head {
+    @apply text-xs font-semibold text-slate-400 uppercase tracking-wider
+           px-4 py-3 text-left border-b border-slate-100;
+  }
+  .tbl-cell {
+    @apply px-4 py-4 text-sm text-slate-700 border-b border-slate-50;
+  }
+
+  /* --- PAGE HEADER --- */
+  .page-section-header {
+    @apply bg-dishub-navy py-16 relative overflow-hidden;
+  }
+
+  /* --- FORM INPUTS --- */
+  .form-input {
+    @apply w-full bg-slate-50 border border-slate-200 focus:border-dishub-blue focus:bg-white
+           rounded-xl px-4 py-3 font-medium text-slate-800 outline-none
+           transition-all duration-200 text-sm;
+  }
+  .form-label {
+    @apply block text-xs font-semibold text-slate-500 uppercase tracking-wider mb-2;
+  }
+
+  /* --- BADGES --- */
+  .badge-active {
+    @apply inline-flex items-center gap-1.5 bg-green-50 text-green-700
+           text-xs font-semibold px-3 py-1 rounded-full border border-green-100;
+  }
+  .badge-info {
+    @apply inline-flex items-center gap-1.5 bg-blue-50 text-blue-700
+           text-xs font-semibold px-3 py-1 rounded-full border border-blue-100;
+  }
+
+  /* --- NAVIGATION (PUBLIC) --- */
+  .nav-link {
+    @apply text-sm font-semibold text-slate-600 hover:text-dishub-blue
+           transition-colors duration-200 relative;
+  }
+  .nav-link.active {
+    @apply text-dishub-blue;
+  }
+}
+
+/* ============================================
+   ANIMATIONS
+   ============================================ */
+@layer utilities {
+
+  @keyframes fade-in-up {
+    from { opacity: 0; transform: translateY(16px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+  }
+
+  @keyframes pulse-slow {
+    0%, 100% { opacity: 0.3; transform: scale(1); }
+    50%       { opacity: 0.5; transform: scale(1.05); }
+  }
+
+  .animate-fade-in-up {
+    animation: fade-in-up 0.5s ease-out forwards;
+  }
+  .animate-fade-in {
+    animation: fade-in 0.4s ease-out forwards;
+  }
+  .animate-pulse-slow {
+    animation: pulse-slow 6s ease-in-out infinite;
+  }
+}

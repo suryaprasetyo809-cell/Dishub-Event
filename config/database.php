@@ -11,13 +11,13 @@ if (file_exists(__DIR__ . '/../.env')) {
 // Enable error reporting for debugging (helpful on Railway)
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-// Database Connection using Environment Variables
+// Database Connection using local or Railway Environment Variables
 $conn = mysqli_connect(
-    getenv('MYSQLHOST') ?: 'localhost',
-    getenv('MYSQLUSER') ?: 'root',
-    getenv('MYSQLPASSWORD') ?: '',
-    getenv('MYSQLDATABASE') ?: 'dishub_event',
-    getenv('MYSQLPORT') ?: '3306'
+    getenv('MYSQLHOST') ?: getenv('MYSQL_HOST') ?: 'localhost',
+    getenv('MYSQLUSER') ?: getenv('MYSQL_USER') ?: 'root',
+    getenv('MYSQLPASSWORD') ?: getenv('MYSQL_PASSWORD') ?: '',
+    getenv('MYSQLDATABASE') ?: getenv('MYSQL_DATABASE') ?: 'railway', // Railway default is usually 'railway'
+    getenv('MYSQLPORT') ?: getenv('MYSQL_PORT') ?: '3306'
 );
 
 if (!$conn) {

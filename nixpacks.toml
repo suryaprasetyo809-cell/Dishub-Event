@@ -1,5 +1,11 @@
 [phases.setup]
-nixPkgs = ["...", "nodejs"]
+nixPkgs = ["php", "nodejs", "git"]
+
+[phases.install]
+cmds = ["composer install --no-dev", "npm install"]
 
 [phases.build]
-cmds = ["composer install", "npm install", "npm run build"]
+cmds = ["npm run build"]
+
+[start]
+cmd = "apache2-foreground"

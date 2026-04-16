@@ -1,6 +1,6 @@
 /vendor/
 /node_modules/
 .env
-/dist/
+# /dist/ (Dihapus agar aset terkirim ke GitHub sementara)
 *.log
 .DS_Store

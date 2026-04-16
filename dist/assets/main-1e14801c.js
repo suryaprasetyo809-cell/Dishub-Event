@@ -1,0 +1,1 @@
+console.log("Dishub Event - Vite Ready");document.addEventListener("DOMContentLoaded",()=>{const t=document.getElementById("mobile-toggle"),e=document.getElementById("mobile-menu"),n=document.getElementById("mobile-close");t&&e&&t.addEventListener("click",()=>{e.classList.remove("hidden")}),n&&e&&n.addEventListener("click",()=>{e.classList.add("hidden")})});

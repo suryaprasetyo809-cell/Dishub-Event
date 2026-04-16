@@ -21,8 +21,13 @@ if (!defined('BASE_URL')) {
     $project_web_root = str_replace($relative_path, '', $script_name);
     $project_web_root = rtrim($project_web_root, '/') . '/';
 
-    // 4. Build full URL
-    $protocol = (!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') ? 'https' : 'http';
+    // 4. Build full URL (with HTTPS proxy support for Railway)
+    $protocol = 'http';
+    if ((!empty($_SERVER['HTTPS']) && $_SERVER['HTTPS'] !== 'off') || 
+        (!empty($_SERVER['HTTP_X_FORWARDED_PROTO']) && $_SERVER['HTTP_X_FORWARDED_PROTO'] === 'https')) {
+        $protocol = 'https';
+    }
+    
     $host = $_SERVER['HTTP_HOST'];
     
     define('BASE_URL', $protocol . '://' . $host . $project_web_root);
@@ -55,10 +60,14 @@ function vite_assets(string $entry = 'src/main.js'): string
         HTML;
     }
 
-    // Production — read manifest
+    // Production — read manifest (check both root and .vite folder for Vite 5+)
     $manifest_path = __DIR__ . '/../dist/manifest.json';
     if (!file_exists($manifest_path)) {
-        return '<!-- [Vite] dist/manifest.json missing. Run: npm run build -->';
+        $manifest_path = __DIR__ . '/../dist/.vite/manifest.json';
+    }
+
+    if (!file_exists($manifest_path)) {
+        return '<!-- [Vite] manifest.json missing in dist/ or dist/.vite/. Run: npm run build -->';
     }
 
     $manifest = json_decode(file_get_contents($manifest_path), true);

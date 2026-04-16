@@ -8,15 +8,18 @@ if (file_exists(__DIR__ . '/../.env')) {
     $dotenv->load();
 }
 
-// Database Connection using Environment Variables
-$conn = mysqli_connect(
-    getenv('MYSQLHOST') ?: 'localhost',
-    getenv('MYSQLUSER') ?: 'root',
-    getenv('MYSQLPASSWORD') ?: '',
-    getenv('MYSQLDATABASE') ?: 'dishub_event',
-    getenv('MYSQLPORT') ?: '3306'
-);
+// Enable error reporting for debugging (helpful on Railway)
+mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
-if (!$conn) {
-    die("Gagal koneksi database: " . mysqli_connect_error());
+// Database Connection using Environment Variables
+try {
+    $conn = mysqli_connect(
+        getenv('MYSQLHOST') ?: 'localhost',
+        getenv('MYSQLUSER') ?: 'root',
+        getenv('MYSQLPASSWORD') ?: '',
+        getenv('MYSQLDATABASE') ?: 'dishub_event',
+        getenv('MYSQLPORT') ?: '3306'
+    );
+} catch (mysqli_sql_exception $e) {
+    die("Gagal koneksi database: " . $e->getMessage());
 }

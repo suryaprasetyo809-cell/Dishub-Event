@@ -22,7 +22,8 @@ INSERT INTO admin (username, password) VALUES
 CREATE TABLE events (
     id INT AUTO_INCREMENT PRIMARY KEY,
     nama_event VARCHAR(100) NOT NULL,
-    tanggal_event DATE NOT NULL
+    tanggal_event DATE NOT NULL,
+    deskripsi TEXT
 );
 
 -- =========================

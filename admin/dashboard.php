@@ -1,19 +1,23 @@
 <?php
 require_once __DIR__ . '/admin_header.php';
 
-// Statistics
-$total_event   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) c FROM events"))['c'] ?? 0;
-$total_peserta = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) c FROM peserta"))['c'] ?? 0;
-$event_aktif   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) c FROM events WHERE tanggal_event >= CURDATE()"))['c'] ?? 0;
-
-// Recent events
-$recent_events = mysqli_query($conn, "SELECT * FROM events ORDER BY tanggal_event DESC LIMIT 5");
-
-// Recent registrants
-$recent_peserta = mysqli_query($conn,
-    "SELECT p.nama, p.jabatan, e.nama_event, p.id
-     FROM peserta p LEFT JOIN events e ON p.event_id = e.id
-     ORDER BY p.id DESC LIMIT 5");
+try {
+    // Statistics
+    $total_event   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) c FROM events"))['c'] ?? 0;
+    $total_peserta = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) c FROM peserta"))['c'] ?? 0;
+    $event_aktif   = mysqli_fetch_assoc(mysqli_query($conn, "SELECT COUNT(*) c FROM events WHERE tanggal_event >= CURDATE()"))['c'] ?? 0;
+    
+    // Recent events
+    $recent_events = mysqli_query($conn, "SELECT * FROM events ORDER BY tanggal_event DESC LIMIT 5");
+    
+    // Recent registrants
+    $recent_peserta = mysqli_query($conn,
+        "SELECT p.nama, p.jabatan, e.nama_event, p.id
+         FROM peserta p LEFT JOIN events e ON p.event_id = e.id
+         ORDER BY p.id DESC LIMIT 5");
+} catch (mysqli_sql_exception $e) {
+    die("Error Database: " . $e->getMessage() . ". <br>Silakan jalankan update_db.php!");
+}
 ?>
 
 <!-- ── STAT CARDS ─────────────────────────── -->

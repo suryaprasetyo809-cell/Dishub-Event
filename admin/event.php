@@ -26,7 +26,11 @@ if (isset($_GET['hapus'])) {
 }
 
 // ── AMBIL DATA ────────────────────────────
-$events = mysqli_query($conn, "SELECT * FROM events ORDER BY tanggal_event DESC");
+try {
+    $events = mysqli_query($conn, "SELECT * FROM events ORDER BY tanggal_event DESC");
+} catch (mysqli_sql_exception $e) {
+    die("Error Database: " . $e->getMessage() . ". <br>Silakan jalankan update_db.php terlebih dahulu.");
+}
 
 // ── LOAD HEADER (HARUS DI BAWAH) ─────────
 require_once __DIR__ . '/admin_header.php';

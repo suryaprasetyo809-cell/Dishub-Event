@@ -3,8 +3,12 @@ $page_title = 'Daftar Agenda — Event Dishub Jawa Tengah';
 require_once __DIR__ . '/config/database.php';
 require_once __DIR__ . '/includes/header.php';
 
-$events = mysqli_query($conn, "SELECT * FROM events ORDER BY tanggal_event ASC");
-$total  = mysqli_num_rows($events);
+try {
+    $events = mysqli_query($conn, "SELECT * FROM events ORDER BY tanggal_event ASC");
+    $total  = mysqli_num_rows($events);
+} catch (mysqli_sql_exception $e) {
+    die("Error Database: " . $e->getMessage() . ". <br>Pastikan tabel 'events' sudah memiliki kolom 'deskripsi'!");
+}
 ?>
 
 <!-- Page Header -->

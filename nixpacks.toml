@@ -1,5 +1,5 @@
 [phases.setup]
-nixPkgs = ["php", "nodejs", "git"]
+nixPkgs = ["php82", "php82Extensions.mysqli", "php82Extensions.gd", "nodejs", "git"]
 
 [phases.install]
 cmds = ["composer install --no-dev", "npm install"]

@@ -2,9 +2,9 @@
 session_start();
 require_once '../config/database.php';
 
-// Ambil data dari form
-$username = $_POST['username'] ?? '';
-$password = $_POST['password'] ?? '';
+// Ambil data dari form dan bersihkan spasi
+$username = trim($_POST['username'] ?? '');
+$password = trim($_POST['password'] ?? '');
 
 if (empty($username) || empty($password)) {
     header('Location: login.php?error=Username dan password harus diisi');

@@ -1,5 +1,8 @@
 <?php
+require_once __DIR__ . '/auth_check.php';
 require_once __DIR__ . '/../config/database.php';
+
+$error_msg = '';
 
 // ── TAMBAH EVENT ───────────────────────────
 if (isset($_POST['tambah'])) {
@@ -8,12 +11,15 @@ if (isset($_POST['tambah'])) {
     $deskripsi = mysqli_real_escape_string($conn, trim($_POST['deskripsi'] ?? ''));
 
     if ($nama && $tanggal) {
-        mysqli_query($conn, "INSERT INTO events (nama_event, tanggal_event, deskripsi)
-                             VALUES ('$nama', '$tanggal', '$deskripsi')");
+        try {
+            mysqli_query($conn, "INSERT INTO events (nama_event, tanggal_event, deskripsi)
+                                 VALUES ('$nama', '$tanggal', '$deskripsi')");
+            header("Location: event.php");
+            exit;
+        } catch (mysqli_sql_exception $e) {
+            $error_msg = "Gagal menambah agenda: " . $e->getMessage();
+        }
     }
-
-    header("Location: event.php");
-    exit;
 }
 
 // ── HAPUS EVENT ───────────────────────────
@@ -48,6 +54,24 @@ require_once __DIR__ . '/admin_header.php';
             </span>
             Tambah Agenda
         </h3>
+
+        <?php if ($error_msg): ?>
+            <div class="bg-red-50 border-l-4 border-red-500 p-4 mb-5 rounded-r-lg">
+                <div class="flex items-center gap-3">
+                    <svg class="w-5 h-5 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" 
+                              d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/>
+                    </svg>
+                    <div>
+                        <p class="text-xs font-bold text-red-800">Gagal Simpan</p>
+                        <p class="text-[11px] text-red-600 leading-tight mt-0.5"><?= $error_msg ?></p>
+                        <p class="text-[10px] text-red-400 mt-2">
+                            Tips: Coba jalankan <a href="../update_db.php" class="underline font-bold hover:text-red-600">Update Database</a> jika kolom 'deskripsi' belum ada.
+                        </p>
+                    </div>
+                </div>
+            </div>
+        <?php endif; ?>
 
         <form method="post" class="space-y-4">
             <div>

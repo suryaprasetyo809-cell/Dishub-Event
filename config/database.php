@@ -12,14 +12,14 @@ if (file_exists(__DIR__ . '/../.env')) {
 mysqli_report(MYSQLI_REPORT_ERROR | MYSQLI_REPORT_STRICT);
 
 // Database Connection using Environment Variables
-try {
-    $conn = mysqli_connect(
-        getenv('MYSQLHOST') ?: 'localhost',
-        getenv('MYSQLUSER') ?: 'root',
-        getenv('MYSQLPASSWORD') ?: '',
-        getenv('MYSQLDATABASE') ?: 'dishub_event',
-        getenv('MYSQLPORT') ?: '3306'
-    );
-} catch (mysqli_sql_exception $e) {
-    die("Gagal koneksi database: " . $e->getMessage());
+$conn = mysqli_connect(
+    getenv('MYSQLHOST') ?: 'localhost',
+    getenv('MYSQLUSER') ?: 'root',
+    getenv('MYSQLPASSWORD') ?: '',
+    getenv('MYSQLDATABASE') ?: 'dishub_event',
+    getenv('MYSQLPORT') ?: '3306'
+);
+
+if (!$conn) {
+    die("Gagal koneksi database: " . mysqli_connect_error());
 }

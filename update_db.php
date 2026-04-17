@@ -14,6 +14,16 @@ try {
         echo "<p>ℹ️ Kolom 'deskripsi' sudah ada.</p>";
     }
 
+    // 2. Update Foreign Key to ON DELETE CASCADE
+    echo "<p>Memperbarui relasi tabel (ON DELETE CASCADE)...</p>";
+    try {
+        mysqli_query($conn, "ALTER TABLE peserta DROP FOREIGN KEY fk_event");
+    } catch (mysqli_sql_exception $e) {
+        // Ignore if it doesn't exist
+    }
+    mysqli_query($conn, "ALTER TABLE peserta ADD CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE");
+    echo "<p>✅ Relasi tabel BERHASIL diperbarui.</p>";
+
     echo "<h3>Selesai! Database Anda sekarang sudah sinkron dengan kode PHP.</h3>";
     echo "<p><a href='index.php'>Kembali ke Beranda</a></p>";
 

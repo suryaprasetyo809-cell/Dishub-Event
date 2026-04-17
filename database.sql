@@ -38,5 +38,5 @@ CREATE TABLE peserta (
     tanggal_event DATE,
     event_id INT,
     tanda_tangan LONGTEXT,
-    CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES events(id)
+    CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE
 );

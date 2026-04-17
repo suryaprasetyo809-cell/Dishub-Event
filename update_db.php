@@ -16,12 +16,26 @@ try {
 
     // 2. Update Foreign Key to ON DELETE CASCADE
     echo "<p>Memperbarui relasi tabel (ON DELETE CASCADE)...</p>";
-    try {
-        mysqli_query($conn, "ALTER TABLE peserta DROP FOREIGN KEY fk_event");
-    } catch (mysqli_sql_exception $e) {
-        // Ignore if it doesn't exist
+    
+    // Cari nama constraint yang ada pada kolom event_id
+    $query_find_fk = "SELECT CONSTRAINT_NAME 
+                      FROM information_schema.KEY_COLUMN_USAGE 
+                      WHERE TABLE_SCHEMA = DATABASE() 
+                      AND TABLE_NAME = 'peserta' 
+                      AND COLUMN_NAME = 'event_id' 
+                      AND REFERENCED_TABLE_NAME = 'events'";
+    
+    $fk_result = mysqli_query($conn, $query_find_fk);
+    while ($row = mysqli_fetch_assoc($fk_result)) {
+        $old_fk = $row['CONSTRAINT_NAME'];
+        echo "<p>Menghapus constraint lama: <code>$old_fk</code>...</p>";
+        mysqli_query($conn, "ALTER TABLE peserta DROP FOREIGN KEY $old_fk");
     }
-    mysqli_query($conn, "ALTER TABLE peserta ADD CONSTRAINT fk_event FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE");
+
+    echo "<p>Menambahkan constraint baru dengan ON DELETE CASCADE...</p>";
+    mysqli_query($conn, "ALTER TABLE peserta ADD CONSTRAINT fk_event_cascade 
+                        FOREIGN KEY (event_id) REFERENCES events(id) ON DELETE CASCADE");
+    
     echo "<p>✅ Relasi tabel BERHASIL diperbarui.</p>";
 
     echo "<h3>Selesai! Database Anda sekarang sudah sinkron dengan kode PHP.</h3>";
